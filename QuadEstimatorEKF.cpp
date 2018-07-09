@@ -104,38 +104,13 @@ void QuadEstimatorEKF::UpdateFromIMU(V3F accel, V3F gyro)
   //Re: rotatational matrix for IMU 
   //https://classroom.udacity.com/nanodegrees/nd787/parts/5aa0a956-4418-4a41-846f-cb7ea63349b3/modules/19b5af05-2ec7-491a-94db-1befc15d07c0/lessons/4d183789-b12c-462f-a134-9503d9216373/concepts/aa91f958-65d5-4ed9-8891-2066dc2cf2f7
   //
-  
-  float phi_angle = 0.0;
-  float theta_angle = 0.0;
+  //
+  Quaternion<float> quat = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, ekfState(6));
+  quat.IntegrateBodyRate(gyro, dtIMU);
 
-  phi_angle = rollEst;
-  theta_angle = pitchEst;
-
-  Mat3x3F rot = Mat3x3F::Zeros();
-
-  rot(0,0) = 1;
-  rot(0,1) = sin(phi_angle) * tan(theta_angle);
-  rot(0,2) = cos(phi_angle) * tan(theta_angle);
-  rot(1,1) = cos(phi_angle);
-  rot(1,2) = -sin(phi_angle);
-  rot(2,1) = sin(phi_angle) / cos(theta_angle);
-  rot(2,2) = cos(phi_angle) / cos(theta_angle);
- 
-  V3F angle_dot = rot * gyro; 
-
-  float predictedRoll = rollEst + dtIMU * angle_dot.x;
-  float predictedPitch = pitchEst + dtIMU * angle_dot.y;
-
-  // normalize yaw to -pi .. pi
-  if (ekfState(6) > F_PI) ekfState(6) -= 2.f*F_PI;
-  if (ekfState(6) < -F_PI) ekfState(6) += 2.f*F_PI;
- 
-  ekfState(6) = ekfState(6) + dtIMU * angle_dot.z; 
-
-  // normalize yaw
-  
-  if (ekfState(6) > F_PI) ekfState(6) -= 2.0 * F_PI;
-  if (ekfState(6) > -F_PI) ekfState(6) += 2.0 * F_PI;
+  float predictedPitch = quat.Pitch();
+  float predictedRoll = quat.Roll();
+  ekfState(6) = quat.Yaw();
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 

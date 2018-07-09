@@ -77,7 +77,7 @@ This step adds update from GPS which provides position and velocity measurements
 
 This step adds the controller used in previous project along with the paramters used earlier. The de-tuning is necessary since this project has estimated accuracy on sensors instead of assuming ideal sensors in earlier project. Decreasing position and velocity gains stabilizes the vehicle. 
 
-Example output
+Output after updating with real controller from previsous project:
 
 PASS: ABS(Quad.GPS.X-Quad.Pos.X) was less than MeasuredStdDev_GPSPosXY for 68% of the time
 PASS: ABS(Quad.IMU.AX-0.000000) was less than MeasuredStdDev_AccelXY for 69% of the time
@@ -95,39 +95,14 @@ PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seco
 PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
 Simulation #10 (../config/08_PredictState.txt)
 
-Updates with own controller:(7/8/18) -- needs work on E-Yaw failure
+Simulation #5 (../config/10_MagUpdate.txt)
+PASS: ABS(Quad.Est.E.Yaw) was less than 0.120000 for at least 10.000000 seconds
+PASS: ABS(Quad.Est.E.Yaw-0.000000) was less than Quad.Est.S.Yaw for 79% of the time
 
-Simulation #4 (../config/06_SensorNoise.txt)
-Simulation #5 (../config/06_SensorNoise.txt)
-PASS: ABS(Quad.GPS.X-Quad.Pos.X) was less than MeasuredStdDev_GPSPosXY for 68% of the time
-PASS: ABS(Quad.IMU.AX-0.000000) was less than MeasuredStdDev_AccelXY for 69% of the time
-Simulation #6 (../config/06_SensorNoise.txt)
-PASS: ABS(Quad.GPS.X-Quad.Pos.X) was less than MeasuredStdDev_GPSPosXY for 68% of the time
-PASS: ABS(Quad.IMU.AX-0.000000) was less than MeasuredStdDev_AccelXY for 69% of the time
-
-
-Simulation #10 (../config/07_AttitudeEstimation.txt)
-PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
-Simulation #11 (../config/07_AttitudeEstimation.txt)
-PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
-Simulation #12 (../config/07_AttitudeEstimation.txt)
-PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
-Simulation #13 (../config/07_AttitudeEstimation.txt)
-PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
-
-
-FAIL: ABS(Quad.Est.E.Yaw) was less than 0.120000 for 3.543053 seconds, which was less than 10.000000 seconds
-PASS: ABS(Quad.Est.E.Yaw-0.000000) was less than Quad.Est.S.Yaw for 73% of the time
-Simulation #34 (../config/10_MagUpdate.txt)
-FAIL: ABS(Quad.Est.E.Yaw) was less than 0.120000 for 3.543053 seconds, which was less than 10.000000 seconds
-PASS: ABS(Quad.Est.E.Yaw-0.000000) was less than Quad.Est.S.Yaw for 73% of the time
-
-
-Simulation #39 (../config/11_GPSUpdate.txt)
+Simulation #6 (../config/11_GPSUpdate.txt)
+Simulation #7 (../config/11_GPSUpdate.txt)
 PASS: ABS(Quad.Est.E.Pos) was less than 1.000000 for at least 20.000000 seconds
-Simulation #40 (../config/11_GPSUpdate.txt)
+Simulation #8 (../config/11_GPSUpdate.txt)
 PASS: ABS(Quad.Est.E.Pos) was less than 1.000000 for at least 20.000000 seconds
-
-
 
 
