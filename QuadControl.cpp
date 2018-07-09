@@ -1,3 +1,5 @@
+// Adding controller from previous project. step 6
+//
 #include "Common.h"
 #include "QuadControl.h"
 
