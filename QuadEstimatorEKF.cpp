@@ -106,11 +106,15 @@ void QuadEstimatorEKF::UpdateFromIMU(V3F accel, V3F gyro)
   //
   //
   Quaternion<float> quat = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, ekfState(6));
-  quat.IntegrateBodyRate(gyro, dtIMU);
+  V3D eulerRPY = quat.IntegrateBodyRate(gyro, dtIMU).ToEulerRPY();
 
-  float predictedPitch = quat.Pitch();
-  float predictedRoll = quat.Roll();
-  ekfState(6) = quat.Yaw();
+  //float predictedPitch = quat.Pitch();
+  //float predictedRoll = quat.Roll();
+  //ekfState(6) = quat.Yaw();
+  
+  float predictedPitch = eulerRPY[0];
+  float predictedRoll = eulerRPY[1];
+  ekfState(6) = eulerRPY[2];
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -177,14 +181,13 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   //Implementing simplistic integration as dt is short duration
  
   predictedState(0) = curState(0) + dt * curState(3);
-  predictedState(1) = curState(0) + dt * curState(4);
-  predictedState(2) = curState(0) + dt * curState(5);
+  predictedState(1) = curState(1) + dt * curState(4);
+  predictedState(2) = curState(2) + dt * curState(5);
 
   V3F acc_w = attitude.Rotate_BtoI(accel); // rotate body to inertial frame
 
   predictedState(3) = curState(3) + dt * acc_w[0]; // x
   predictedState(4) = curState(4) + dt * acc_w[1]; // y
-  //predictedState(5) = curState(5) + dt * acc_w[2]; // x
   predictedState(5) = curState(5) + dt * acc_w[2] - dt * CONST_GRAVITY;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
@@ -333,12 +336,10 @@ void QuadEstimatorEKF::UpdateFromGPS(V3F pos, V3F vel)
 
   // The matrix is set to all 0s
   // Now set the diagonal to 1
-  hPrime(0,0) = 1;
-  hPrime(1,1) = 1;
-  hPrime(2,2) = 1;
-  hPrime(3,3) = 1;
-  hPrime(4,4) = 1;
-  hPrime(5,5) = 1;
+
+  for (int i=0; i<5; i++) {
+  	hPrime(i,i) = 1;
+  }
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
